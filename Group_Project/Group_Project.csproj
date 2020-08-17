@@ -66,7 +66,7 @@
     <Content Include="App_Data\Group_Database_log.ldf">
       <DependentUpon>Group_Database.mdf</DependentUpon>
     </Content>
-    <Content Include="Service1.svc" />
+    <Content Include="Group_Service.svc" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
@@ -75,10 +75,10 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>DataClasses1.dbml</DependentUpon>
     </Compile>
-    <Compile Include="Service1.svc.cs">
-      <DependentUpon>Service1.svc</DependentUpon>
+    <Compile Include="Group_Service.svc.cs">
+      <DependentUpon>Group_Service.svc</DependentUpon>
     </Compile>
-    <Compile Include="IService1.cs" />
+    <Compile Include="IGroup_Service.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
