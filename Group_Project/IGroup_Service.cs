@@ -11,6 +11,7 @@ namespace Group_Project
     [ServiceContract]
     public interface IGroup_Service
     {
+        //user management
         //login function
         [OperationContract]
         int login(string email, string password);
@@ -31,6 +32,25 @@ namespace Group_Project
         [OperationContract]
         Client getClient(int id);
 
+        //registering
+        [OperationContract]
+        string Register(string username, string password, string name, string email, string contactno, int active, string address, string surname = null, string businesstype = null, string usertype = "client");
+
+        //updating the user
+        [OperationContract]
+        string UpdateInfo(string username, string name, string email, string contactno, string address, int id, string surname = null, string businesstype = null);
+
+        //getting id
+        [OperationContract]
+        Mask_Type getMask(int id);
+
+        //hash password
+        //active 
+
+
+
+
+        //Invoice
         //get the invoice
         [OperationContract]
         Order_Table getInvoice(int id);
@@ -39,13 +59,64 @@ namespace Group_Project
         [OperationContract]
         Order_Item getItem(int id);
 
-        //registering
-        [OperationContract]
-        string Register(string username, string password, string name, string email,string contactno,int active, string address, string surname = null, string businesstype = null, string usertype = "client");
+        //get all items
+        //get all invoices
 
-        //updating the user
+
+
+        //Product catalog
         [OperationContract]
-        string UpdateInfo(string username, string name, string email, string contactno,string address, int id, string surname = null, string businesstype = null);
+        string addproducts(string name, string description, Decimal price, int active,int maskid, int admin, int quantity );
+
+        [OperationContract]
+        string editproduct(string name, string description, Decimal price,int id, int active, int maskid, int admin, int quantity);
+
+        [OperationContract]
+        string addtype(string name, string description, int admin);
+
+        [OperationContract]
+        string edittype(string name, string description, int admin,int id);
+
+        [OperationContract]
+        string addsize(string name, string dimensions);
+
+        [OperationContract]
+        string editsize(string name, string dimen, int id);
+
+        [OperationContract]
+        string addpsize(int sizeid, int psize);
+
+        [OperationContract]
+        string updatepsize(int sizeid, int psize, int id);
+
+        [OperationContract]
+        string addcustom(int pid, string filter, int size);
+
+        [OperationContract]
+        string editcustom(int pid, string filter, int size, int id);
+
+        [OperationContract]
+        List<Product> getallproducts();
+
+        [OperationContract]
+        Product getprod(int maskid);
+
+        [OperationContract]
+        Product getProduct(int id);
+
+
+        [OperationContract]
+        Product filterprod(Double min, Double max);
+        //get custom
+        //get size
+        //get prod size from product table
+
+        //list all custom
+        //list all size
+        //list all prod size from product table
+
+        //Report
+
     }
 
 }

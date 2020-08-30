@@ -15,6 +15,7 @@ namespace Group_Project
         // connecting to the database
         DataClasses1DataContext db = new DataClasses1DataContext();
 
+        //User Management
         //getting admin
         public Admin getAdmin(int id)
         {
@@ -29,6 +30,24 @@ namespace Group_Project
             else
             {
                 return ad;
+            }
+        }
+
+        
+        //getting mask
+        public Mask_Type getMask(int id)
+        {
+            var ms = (from c in db.Mask_Types
+                      where c.Mask_Id.Equals(id)
+                      select c).FirstOrDefault();
+
+            if (ms == null)
+            {
+                return null;
+            }
+            else
+            {
+                return ms;
             }
         }
 
@@ -255,6 +274,224 @@ namespace Group_Project
             else
             { 
                 return "unsuccessful update";
+            }
+        }
+        
+
+        //add products
+        public string addproducts(string name, string description, Decimal price, int active, int maskid, int admin, int quantity)
+        {
+            var prod = (from p in db.Products
+                        where p.Name.Equals(name)
+                        select p).FirstOrDefault();
+
+            var a = getAdmin(admin);
+            a.User_Id = admin;
+
+            var m = getMask(maskid);
+            m.Mask_Id = maskid;
+
+            if (prod == null)
+            {
+                var newprod = new Product
+                {
+                    Name = name,
+                    Description = description,
+                    Unit_Price = price,
+                    Active = active,
+                    Date_Created = DateTime.Today//,
+                    //Quantity = quantity
+                };
+                db.Products.InsertOnSubmit(newprod);
+
+                try
+                {
+                    db.SubmitChanges();
+                    return "added";
+                }
+                catch (Exception ex)
+                {
+                    ex.GetBaseException();
+                    return "not added";
+                }
+            }
+            else
+            {
+                return "error";
+            }
+
+        
+        }
+
+        public string editproduct(string name, string description, Decimal price, int id, int active, int maskid, int admin, int quantity)
+        {
+            var prod = getProduct(id);
+
+            if (prod != null)
+            {
+                prod.Name = name;
+                prod.Description = description;
+                prod.Unit_Price = price;
+                var a = getAdmin(admin);
+                a.User_Id = admin;
+
+                var m = getMask(maskid);
+                m.Mask_Id = maskid;
+                try
+                {
+                    //update
+                    db.SubmitChanges();
+                    return " updated";
+                }
+                catch (IndexOutOfRangeException ex)
+                {
+                    ex.GetBaseException();
+                    return "unsuccessful update";
+                }
+            }
+            else
+            {
+                // needs to register user
+                return "product does not exist";
+            }
+        }
+
+        public string addtype(string name, string description, int admin)
+        {
+            var ty = (from p in db.Mask_Types
+                        where p.Name.Equals(name)
+                        select p).FirstOrDefault();
+
+            var a = getAdmin(admin);
+            a.User_Id = admin;
+
+            if (ty == null)
+            {
+                var newtype = new Mask_Type
+                {
+                    Name = name,
+                    Description = description,
+
+                };
+                db.Mask_Types.InsertOnSubmit(newtype);
+
+                try
+                {
+                    db.SubmitChanges();
+                    return "added";
+                }
+                catch (Exception ex)
+                {
+                    ex.GetBaseException();
+                    return "not added";
+                }
+            }
+            else
+            {
+                return "error";
+            }
+        }
+
+        public string edittype(string name, string description, int admin, int id)
+        {
+            var ty = getMask(id);
+
+            if (ty != null)
+            {
+                ty.Name = name;
+                ty.Description = description;
+                var a = getAdmin(admin);
+                a.User_Id = admin;
+                try
+                {
+                    //update
+                    db.SubmitChanges();
+                    return " updated";
+                }
+                catch (IndexOutOfRangeException ex)
+                {
+                    ex.GetBaseException();
+                    return "unsuccessful update";
+                }
+            }
+            else
+            {
+                
+                return "type does not exist";
+            }
+        }
+
+        public string addsize(string name, string dimensions)
+        {
+            throw new NotImplementedException();
+        }
+
+        public string editsize(string name, string dimen)
+        {
+            throw new NotImplementedException();
+        }
+
+        public string addpsize(int sizeid, int psize)
+        {
+            throw new NotImplementedException();
+        }
+
+        public string updatepsize(int sizeid, int psize)
+        {
+            throw new NotImplementedException();
+        }
+
+        public string addcustom(int pid, string filter, int size)
+        {
+            throw new NotImplementedException();
+        }
+
+        public string editcustom(int pid, string filter, int size)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Product getprod(int maskid)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Product filterprod(double min, double max)
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<Product> getallproducts()
+        {
+            
+            var prods = new List<Product>();
+
+            dynamic prod = (from t in db.Products
+                            select t);
+
+            foreach (Product p in prod)
+            {
+                var ps = getProduct(p.Product_Id);
+                prods.Add(ps);
+            }
+               
+            return prods;
+            }
+
+
+        public Product getProduct(int id)
+        {
+            var us = (from p in db.Products
+                      where p.Product_Id.Equals(id)
+                      select p).FirstOrDefault();
+
+            if (us == null)
+            {
+                return null;
+            }
+            else
+            {
+                return us;
             }
         }
     }
