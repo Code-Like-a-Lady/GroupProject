@@ -23,7 +23,7 @@ namespace Group_Project
                       where a.User_Id.Equals(id)
                       select a).FirstOrDefault();
 
-            if (ad == null)
+            if (ad != null)
             {
                 return null;
             }
